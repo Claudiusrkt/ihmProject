@@ -1,0 +1,572 @@
+@use './ths.scss';
+
+$px: 8px;
+$col1: #ffffff;
+$col2: #620BAA;
+$col3: #360360;
+$tr: 0.3s;
+
+
+@font-face {
+    font-family: Poppins;
+    src: url('../assets/fonts/Poppins-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('../assets/fonts/Roboto_Condensed-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: x-font;
+    src: url('../assets/fonts/AppleGaramond.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*
+    header: logo & menu & user-btn-manager
+*/
+.header {
+    @include ths.flex(row, center, space-between);
+    padding: 0px ($px * 10);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    backdrop-filter: blur($px);
+    background-color: $col2;
+    color: $col1;
+    z-index: 500;
+
+    .logo-field {
+        @include ths.flex(row, center, center);
+        color: $col1;
+        font-size: 36px;
+        font-weight: bold;
+        font-family: x-font;
+        letter-spacing: $px;
+        margin: $px;
+    }
+    .menu {
+        @include ths.flex();
+        list-style: none;
+        padding: $px;
+        margin: $px*2 $px $px $px;
+        font-size: 16px;
+        font-family: Roboto;
+
+        .link {
+            text-decoration: none;
+            color: $col1;
+            padding: $px * 2;
+            margin: $px auto;
+            transition: all $tr;
+            border-radius: $px * 4;
+        }
+        .link:hover, .link:focus{
+            background-color: $col3;
+        }
+    }
+    .user-btn-manager {
+        @include ths.flex();
+        font-family: Roboto;
+        padding: calc($px * 3 / 2);
+        
+        .status {
+            .btn-user {
+                border: 1px solid rgba($color: $col1, $alpha: 0.5);
+                background-color: $col3;
+                color: $col1;
+                margin: 0px $px;
+                padding: $px 12px;
+                border-radius: 100%;
+            }
+        }
+        .btn-connecter, .btn-deconnecter {
+            padding: calc($px * 3.3 / 2);
+            border-radius: $px * 4;
+            border: none;
+            transition: all $tr;
+        }
+        .btn-connecter {
+            background-color: $col3;
+            color: $col1;
+        }
+        .btn-deconnecter {
+            background-color: $col1;
+            color: $col2;
+        }
+        .btn-connecter:focus, .btn-deconnecter:focus {
+            transform: scale(0.98);
+        }
+    }
+    .drop-down {
+        display: none;
+    }
+}
+@media screen and (max-width: 1100px) {
+    .header {
+        padding: 0px ($px);
+    }
+}
+@media screen and (max-width: 835px) {
+    .header {
+        .menu {
+            display: none;
+        }
+        .user-btn-manager {
+            display: none;
+        }
+        .drop-down {
+            @include ths.flex();
+            font-family: Roboto;
+            margin-top: $px;
+            transition: all $tr;
+
+            .status {
+                .btn-user {
+                    border: 1px solid rgba($color: $col1, $alpha: 0.5);
+                    border-radius: 100%;
+                    background-color: $col3;
+                    color: $col1;
+                    margin: $px $px ($px * 2) $px;
+                    padding: $px 12px;
+                }
+            }
+            .current {
+                @include ths.flex();
+                color: $col3;
+                padding: calc($px / 3) $px calc($px / 3) ($px * 2);
+                margin: 0px $px $px 0px;
+                border: 1px solid rgba($color: $col1, $alpha: 0.3);
+                border-radius: $px * 4;
+
+                .current-page {
+                    color: $col1;
+                }
+                .bar {
+                    border: none;
+                    outline: none;
+                    background-color: transparent;
+                    padding: $px;
+                    color: $col1;
+                    font-size: 19px;
+                    transition: all $tr;
+                }
+                .bar:hover, .bar:focus {
+                    rotate: 90deg;
+                }
+            }
+            .drop-down-menu {
+                display: none;
+                width: 240px;
+                position: absolute;
+                top: $px * 8;
+                right: $px;
+                z-index: 500;
+                background-color: $col1;
+                height: 100vh;
+                box-shadow: 2px 2px 40px 15px rgba($color: $col3, $alpha: 0.5);
+                animation: menu $tr;
+
+                li {
+                    list-style: none;
+                    padding: calc($px / 2);
+                }
+                .link { // menu
+                    @include ths.flex(row, center, left);
+                    padding: $px * 2;
+                    text-decoration: none;
+                    width: 100%;
+                    color: $col2;
+                    transition: all $tr;
+                    i {
+                        padding: calc($px / 2);
+                    }
+                }
+                .link:hover, .link:focus{
+                    background-color: #f0f0f0;
+                }
+                .user-btn {
+                    @include ths.flex(row, center, center);
+                    padding: $px * 1.5;
+                    text-decoration: none;
+                    color: $col1;
+                    background-color: $col2;
+                    width: 100%;
+
+                    i {
+                        padding: calc($px / 2);
+                    }
+                }
+                @keyframes menu {
+                    from {
+                        right: -($px * 4);
+                    }
+                    to {
+                        right: $px;
+                    }
+                }
+            }
+        }
+        .drop-down:hover .drop-down-menu {
+            display: inline;
+        }
+        .drop-down:focus .drop-down-menu {
+            display: inline;
+        }
+        .link:focus .drop-down-menu {
+            display: none;
+        }
+        
+        .drop-down:hover .bar {
+            rotate: 90deg;
+        }
+    }
+}
+
+/* 
+    to hide HOTEL => logo/icon label text for mobile device
+*/
+@media screen and (max-width: 430px) {
+    .header {
+        .logo-field {
+            .icon-label {
+                display: none;
+            }
+        }
+    }
+}
+
+/*
+    page accueil: presentation des chambres
+*/
+@media screen and (min-width: 3000px) {
+    .accueil {
+        height: 70vh;
+    }
+}
+.accueil {
+    @include ths.flex(column, center, center);
+    font-family: Poppins;
+
+    .salutation-text {
+        color: $col2;
+        text-align: center;
+        font-weight: bolder;
+        margin-top: 100px;
+        margin-right: 0px;
+        animation: salutation-text 1.5s;
+    }
+    @keyframes salutation-text {
+        from {
+            margin-right: 50px;
+            opacity: 0;
+        }
+        to {
+            margin-right: 0px;
+            opacity: 1;
+        }
+    }
+    .circle {
+        width: 100px;
+        height: 100px;
+        background-color: $col2;
+        border-radius: 100%;
+        position: absolute;
+        z-index: 1;
+        filter: blur(40px);
+        animation-duration: 1.5s;
+    }
+    .blur-circle1 {
+        top: 30%;
+        right: 10%;
+        animation-name: c3;
+    }
+    .blur-circle2 {
+        top: 50%;
+        left: 10%;
+        animation-name: c4;
+    }
+    @keyframes c3 {
+        from {
+            top: 10%;
+        }
+        to {
+            top: 30%;
+        }
+    }
+    @keyframes c4 {
+        from {
+            top: 30%;
+        }
+        to {
+            top: 50%;
+        }
+    }
+    .room-presentation {
+        @include ths.flex(row, center, center);
+        flex-wrap: wrap;
+        gap: 1rem;
+        z-index: 10;
+
+        .block {
+            @include ths.flex(column, center, space-between);
+            gap: 1rem;
+            animation-timeline: view();
+            animation-duration: 2s;
+            margin: $px * 2;
+
+            img {
+                width: 800px;
+                border-radius: $px * 5;
+                box-shadow: 1px 1px 10px 0px rgba($color: $col2, $alpha: 0.5);
+                z-index: 10;
+            }
+            .label {
+                font-family: Roboto, sans-serif;
+                font-size: 18px;
+                color: $col3;
+                z-index: 10;
+            }
+        }
+        .b1 {
+            animation-name: b1;
+        }
+        .b2 {
+            animation-name: b2;
+        }
+        .b3 {
+            animation-name: b3;
+        }
+        @keyframes b1 {
+            from {
+                transform: scale(0.8);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        @keyframes b2 {
+            from {
+                transform: scale(0.8);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        @keyframes b3 {
+            from {
+                transform: scale(0.8);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+    }
+    .link-to-reservation .btn {
+        font-family: Roboto, sans-serif;
+        background-color: $col3;
+        color: $col1;
+        border-radius: $px * 3;
+        transition: all $tr;
+        padding: $px calc($px * 3 / 2);
+        margin: ($px * 4) auto ($px * 10) auto;
+    }
+    .btn:hover {
+        transform: scale(0.98);
+    }
+}
+@media screen and (max-width: 835px) {
+    .accueil {
+        .room-presentation {
+            @include ths.flex(row, center, center);
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            .block {
+                @include ths.flex(column, center, space-between);
+                gap: 1rem;
+                animation-timeline: view();
+                animation-duration: 2s;
+                margin: 0px;
+
+                img {
+                    width: 100%;
+                    border-radius: $px * 5;
+                    box-shadow: 1px 1px 10px 0px rgba($color: $col2, $alpha: 0.5);
+                    z-index: 10;
+                }
+                .label {
+                    color: $col3;
+                    z-index: 10;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .accueil {
+        .room-presentation {
+            @include ths.flex(row, center, center);
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            .block {
+                @include ths.flex(column, center, space-between);
+                gap: 1rem;
+                animation-timeline: view();
+                animation-duration: 2s;
+
+                img {
+                    width: 100%;
+                    border-radius: $px * 5;
+                    box-shadow: 1px 1px 10px 0px rgba($color: $col2, $alpha: 0.5);
+                    z-index: 10;
+                }
+                .label {
+                    color: $col3;
+                    z-index: 10;
+                }
+            }
+        }
+    }
+}
+
+/*
+    footer
+*/
+.page-footer {
+    @include ths.flex(column, center, center);
+    width: 100%;
+    height: 30vh;
+    background-color: #360360;
+    color: $col1;
+    font-family: Roboto, sans-serif;
+    padding: $px * 4;
+    z-index: 1;
+    margin-top: 100px;
+
+    ul {
+        text-align: center;
+        list-style: none;
+        gap: 3rem;
+
+        li {
+            line-height: 32px;
+        }
+        li .link {
+            color: $col1;
+        }
+    }
+}
+@media screen and (max-width: 700px) {
+    .page-footer {
+        height: auto;
+
+        ul {
+            text-align: left;
+            list-style: inherit;
+            gap: 0rem;
+
+            li {
+                line-height: 32px;
+            }
+            li .link {
+                color: $col1;
+            }
+        }
+    }
+}
+
+.deconnecter {
+    @include ths.flex();
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    font-family: Roboto;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    backdrop-filter: blur($px);
+
+    .deconnecter-modal {
+        @include ths.flex(column, center, center);
+        background-color: $col1;
+        color: black;
+        border-radius: $px * 2;
+        box-shadow: 15px 15px 1000px 100px rgba($color: $col2, $alpha: 0.5);
+        padding: $px * 2;
+        animation: modal 0.6s;
+        z-index: 1002;
+
+        .modal-icon {
+            font-size: $px * 3;
+            color: green;
+            padding: $px $px*2;
+            margin: $px;
+        }
+        .body {
+            text-align: center
+        }
+        .footer {
+            @include ths.flex(row, center, space-between);
+            margin-top: $px;
+            width: 100%;
+
+            .btn {
+                width: 140px;
+                border: 1px solid rgba($color: green, $alpha: 0.3);
+                border-radius: $px * 4;
+            }
+            .annuler {
+                color: green;
+            }
+            .confirmer {
+                background-color: green;
+                color: $col1;
+                margin-left: $px;
+            }
+        }
+    }
+    @media screen and (max-width: 320px) {
+        .deconnecter-modal {
+            padding: $px * 2;
+            width: 99%;
+            
+            .body {
+                font-size: 14px;
+            }
+        }
+    }
+    @keyframes modal {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+.form-control {
+    transition: all $tr;
+}
+.form-control:focus {
+    border: 1px solid rgba($color: $col2, $alpha: 0.4);
+    box-shadow: 2px 2px 2px 0px rgba($color: $col2, $alpha: 0.4), -2px -2px 2px 0px rgba($color: $col2, $alpha: 0.4);
+    background-color: $col1;
+}

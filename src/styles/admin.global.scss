@@ -1,0 +1,71 @@
+@use "ths.scss";
+
+$col1: #ffffff;
+$col2: #0e85b4;
+$col3: #08ac08;
+$col4: #e0e0e0;
+$transition: all 0.3s;
+$border: 8px;
+$px: 8px;
+
+@font-face {
+    font-family: Roboto;
+    src: url('../assets/fonts/Roboto_Condensed-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.admin {
+    @include ths.flex();
+    font-family: Roboto;
+    
+    .menu-container {
+        height: 100vh;
+        padding: $px * 2;
+        width: 20%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-image: linear-gradient(to bottom right, #000000, #246179);
+    }
+    .content-container {
+        width: 80%;
+        margin-left: 20%;
+        padding: $px * 2;
+    }
+}
+
+.dashboard-menu {
+    @include ths.flex(column, left, left);
+    color: $col1;
+
+    .link {
+        padding: $px * 2;
+        color: $col1;
+        transition: all 1.2s;
+    }
+    .link:hover {
+        background-color: #526eaa;
+    }
+    .user-icon {
+        @include ths.flex();
+        padding: $px;
+
+        .fa-user {
+            font-size: 70px;
+            border: 1px solid $col1;
+            border-radius: 100%;
+            padding: $px * 4;
+        }
+    }
+    .link {
+        text-decoration: none;
+    }
+}

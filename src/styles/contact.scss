@@ -1,0 +1,125 @@
+@use './ths.scss';
+
+$px: 8px;
+$col1: #ffffff;
+$col2: #620BAA;
+$col3: #360360;
+$tr: 0.3s;
+
+
+@font-face {
+    font-family: Roboto;
+    src: url('../assets/fonts/Roboto_Condensed-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@media screen and (max-width: 590px) {
+    .contact-container {
+        height: auto;
+
+        .contact-heading {
+            margin-top: 100px;
+        }
+    }
+}
+
+@media screen and (min-width: 1100px) {
+    .contact-container {
+        @include ths.flex(column, center, center);
+    }
+}
+
+.contact-container {
+    @include ths.flex(column, center, start);
+    font-family: Roboto;
+    color: $col3;
+    height: 70vh;
+
+    .circle {
+        width: 100px;
+        height: 100px;
+        background-color: $col2;
+        border-radius: 100%;
+        position: absolute;
+        z-index: 1;
+        filter: blur(40px);
+        animation-duration: 1.5s;
+    }
+    .blur-circle1 {
+        top: 30%;
+        right: 10%;
+        animation-name: c1;
+    }
+    .blur-circle2 {
+        top: 50%;
+        left: 10%;
+        animation-name: c2;
+    }
+    @keyframes c1 {
+        from {
+            top: 10%;
+        }
+        to {
+            top: 30%;
+        }
+    }
+    @keyframes c2 {
+        from {
+            top: 30%;
+        }
+        to {
+            top: 50%;
+        }
+    }
+
+    .contact-heading {
+        text-align: center;
+        color: $col2;
+        font-family: Poppins, sans-serif;
+        margin-right: 0px;
+        margin-top: 100px;
+        padding: auto $px;
+        animation: heading-text 1.5s;
+        line-height: 55px;
+        z-index: 5;
+    }
+    @keyframes heading-text {
+        from {
+            margin-right: 50px;
+            opacity: 0;
+        }
+        to {
+            margin-right: 0px;
+            opacity: 1;
+        }
+    }
+    .contact {
+        padding: ($px * 2) ($px * 4);
+        border: 1px solid $col2;
+        border-radius: $px*4 0px $px*4 0px;
+        box-shadow: 2px 2px 20px 2px rgba($color: $col2, $alpha: 0.5);
+        animation: contact 2s;
+        line-height: $px * 4;
+        margin: $px * 4;
+        background-color: $col1;
+        z-index: 5;
+        transition: all $tr;
+    }
+    @media screen and (max-width: 330px) {
+        .contact {
+            width: 100%;
+        }
+    }
+    .contact:hover {
+        transform: scale(0.98);
+    }
+    @keyframes contact {
+        from {
+            opacity: 0;
+        }to {
+            opacity: 1;
+        }
+    }
+}

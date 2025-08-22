@@ -1,0 +1,176 @@
+import Accueil from "./pages/accueil";
+import Reservation from "./pages/reservation";
+import Contact from "./pages/contact";
+import Auth from "./pages/auth";
+import Admin from "./pages/admin/admin";
+import Chambre from "./pages/admin/chambre";
+import ClientComp from "./pages/admin/client";
+import Dashboard from "./pages/admin/dashboard";
+import { BrowserRouter, Routes, Route, Link } from "react-router";
+import { useEffect, useState } from "react";
+import Client from "./fetch/client";
+
+export default function App() {
+    const [current, setCurrent] = useState("Accueil");
+    const [displayUserStatus, setDisplayUserStatus] = useState("none");
+    const [displayUserIcon, setDisplayUserIcon] = useState("none");
+    const [showDeconnecterModal, setShowDeconnecterModal] = useState("none");
+    const [name, setName] = useState(".");
+
+    /**
+     * onpopstate: to detect go forward() and back() history event
+     */
+    window.onpopstate = () => {
+        setCurrentPageDisplayer(window.location.pathname);
+    }
+
+    useEffect(() => {
+        setCurrentPageDisplayer(window.location.pathname);
+    }, [current])
+
+    /**
+     * change current menu displayer
+     */
+    function setCurrentPageDisplayer(pathname: any) {
+        if(pathname == "/") {
+            setCurrent("Accueil");
+        }else if(pathname == "/reservation") {
+            setCurrent("Réservation");
+        }else if(pathname == "/contact") {
+            setCurrent("Contact");
+        }else {
+            setCurrent("Connexion");
+        }
+    }
+
+    useEffect(() => { // connecter && deconnecter btn
+        let user: any = localStorage.getItem("user");
+        if((user != null) && (JSON.parse(user).isConnected == true)) {
+            const client = new Client();
+            client.obtenirClientByNumeroClient(JSON.parse(user).numeroClient)
+            .then((response) => {
+                setName(response.data.Personne?.nom || "Inconnu");
+            })
+            setDisplayUserStatus("block");
+        }else {
+            setDisplayUserStatus("none");
+        }
+    }, [displayUserStatus])
+
+    useEffect(() => { // user name
+        setInterval(() => { 
+            let user: any = localStorage.getItem("user");
+            if((user != null) && (JSON.parse(user).isConnected == true)) {
+                setDisplayUserIcon("block");
+            }else {
+                setDisplayUserIcon("none");
+            }
+        }, 1000)
+    }, [displayUserIcon])
+
+    function seDeconnecter() {
+        setShowDeconnecterModal("block");
+    }
+
+    return (
+        <BrowserRouter>
+            <div className="page-container">
+                <div className="header" style={{ display: 
+                    window.location.pathname == "/admin" || 
+                    window.location.pathname == "/admin/dashboard" || 
+                    window.location.pathname == "/admin/client" || 
+                    window.location.pathname == "/admin/chambre"
+                    ? "none" : "flex" }}>
+                    <div className="logo-field"><i className="fa-solid fa-hotel"> </i> <span className="icon-label">HOTEL</span></div>
+                    <div className="menu">
+                        <li><Link to={ "/" } className="link" onClick={ () => setCurrent("Accueil") } ><i className="fa-solid fa-home"></i> <span>Accueil</span></Link></li>
+                        <li><Link to={ "/reservation" } className="link" onClick={ () => setCurrent("Réservation") }><i className="fa-solid fa-calendar"></i> <span>Réservation</span></Link></li>
+                        <li><Link to={ "/contact" } className="link" onClick={ () => setCurrent("Contact") }><i className="fa-solid fa-phone"></i> <span>Contact</span></Link></li>
+                    </div>
+                    <div className="user-btn-manager">
+                        <div className="status" style={ { display: displayUserIcon } }>
+                            <button className="btn btn-user">{ name.toUpperCase() }</button>
+                            {/* <button className="btn btn-user">TEST</button> */}
+                        </div>
+                        <Link to={ "/auth" } className="link" onClick={ () => setCurrent("Connexion") } style={ { display: displayUserStatus == "block" ? "none" : "block" } }><button className="btn-connecter"><i className="fa-solid fa-sign-in"></i> <span>Se connecter</span></button></Link>
+                        <Link to={ "?" } className="link" onClick={ () => seDeconnecter() } style={ { display: displayUserStatus } }><button className="btn-deconnecter"><i className="fa-solid fa-sign-out"></i> <span>Se déconnecter</span></button></Link>
+                    </div>
+                    <div className="drop-down">
+                        <div className="status" style={ { display: displayUserIcon } }>
+                            <button className="btn btn-user">{ name.toUpperCase() }</button> 
+                            {/* <button className="btn btn-user">TEST</button> */}
+                        </div>
+                        <div className="current">
+                            <div className="current-page">{ current }</div>
+                            <button className="bar"><i className="fa-solid fa-bars"></i></button>
+                        </div>
+                        <div className="drop-down-menu">
+                            <li><Link to={ "/" } className="link" onClick={ () => setCurrent("Accueil") }><i className="fa-solid fa-home"></i>Accueil</Link></li>
+                            <li><Link to={ "/reservation" } className="link" onClick={ () => setCurrent("Réservation") }><i className="fa-solid fa-calendar"></i>Réservation</Link></li>
+                            <li><Link to={ "/contact" } className="link" onClick={ () => setCurrent("Contact") }><i className="fa-solid fa-phone"></i>Contact</Link></li>
+                            <li><Link to={ "?" } style={ { display: displayUserStatus } } className="link"><i className="fa-solid fa-edit"></i>Editer</Link></li>
+                            <li className="sign-btn" style={ { display: displayUserStatus == "block" ? "none" : "block" } }><Link to={ "/auth" } className="user-btn" onClick={ () => setCurrent("Connexion") }><i className="fa-solid fa-sign-in"></i> Se connecter</Link></li>
+                            <li className="sign-btn" style={ { display: displayUserStatus } }><Link to={ "?" } className="user-btn" onClick={ () => seDeconnecter() }><i className="fa-solid fa-sign-out"></i> Se déconnecter</Link></li>
+                        </div>
+                    </div>
+                </div>
+                <div className="deconnecter-field" style={ { display: showDeconnecterModal } }>
+                    <Deconnecter setShowDeconnecterModal={ setShowDeconnecterModal } setDisplayUserStatus={ setDisplayUserStatus } />
+                </div>
+                <div className="main">
+                    <Routes>
+                        <Route path="/" element={ <Accueil setCurrent={ setCurrent } /> } />
+                        <Route path="/reservation" element={ <Reservation /> } />
+                        <Route path="/contact" element={ <Contact /> } />
+                        <Route path="/auth" element={ <Auth setCurrent={ setCurrent } setDisplayUserStatus={ setDisplayUserStatus } /> } />
+
+                        <Route path="/admin" element={ <Admin /> }>
+                            <Route index element={ <Dashboard /> } />
+                            <Route path="/admin/chambre" element={ <Chambre /> } />
+                            <Route path="/admin/client" element={ <ClientComp />} />
+                        </Route>
+                    </Routes>
+                </div>
+                <div className="page-footer" style={{ display: 
+                    window.location.pathname == "/admin" || 
+                    window.location.pathname == "/admin/dashboard" || 
+                    window.location.pathname == "/admin/client" || 
+                    window.location.pathname == "/admin/chambre"
+                    ? "none" : "flex" }}>
+                    <ul>
+                        <li><i className="fa-solid fa-copyright"></i> <small>Copyright 2025</small></li>
+                        <li><small>Projet de gestion de réservation de chambre d'hotel</small></li>
+                        <li><small>Usage académique</small></li>
+                        <li><Link to={ "/contact" } className="link"><i className="fa-solid fa-phone"></i> <small>Contact</small></Link></li>
+                    </ul>
+                </div>
+            </div>
+        </BrowserRouter>
+    );
+}
+
+function Deconnecter({ setShowDeconnecterModal, setDisplayUserStatus }: any) {
+    function confirmer() {
+        localStorage.clear();
+        setShowDeconnecterModal("none");
+        setDisplayUserStatus("none");
+    }
+
+    return (
+        <div className="deconnecter">
+            <div className="deconnecter-modal">
+                <div className="modal-icon"><i className="fa-solid fa-sign-out"></i></div>
+                <div className="head">
+                    <h4>Déconnexion</h4>
+                </div>
+                <div className="body">
+                    <p>Est-ce que vous voulez déconnecter?</p>
+                </div>
+                <div className="footer">
+                    <button className="btn annuler" onClick={ () => setShowDeconnecterModal("none") }><i className="fa-solid fa-cancel"></i> Annuler</button>
+                    <button className="btn confirmer" onClick={ confirmer }><i className="fa-solid fa-sign-out"></i> Déconnecter</button>
+                </div>
+            </div>
+        </div>
+    );
+}

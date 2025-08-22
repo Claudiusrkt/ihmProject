@@ -1,0 +1,440 @@
+@use "./ths.scss";
+
+$px: 8px;
+$col1: #ffffff;
+$col2: #620BAA;
+$col3: #360360;
+$tr: all 0.3s;
+
+@font-face {
+    font-family: Poppins;
+    src: url('../assets/fonts/Poppins-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('../assets/fonts/Roboto_Condensed-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: x-font;
+    src: url('../assets/fonts/AppleGaramond.ttf/');
+    font-style: normal;
+    font-display: fallback;
+}
+
+.connexionStatus {
+    text-align: center;
+    font-family: Roboto;
+    color: $col1;
+    border: 1px solid green;
+    background-color: green;
+    animation: infoMsg 3s;
+    padding: $px;
+    position: fixed;
+    right: $px * 10;
+    top: $px * 10;
+    border-radius: $px * 2 $px $px $px;
+    z-index: 100;
+    
+    @keyframes infoMsg {
+        from {
+            opacity: 0;
+        }to {
+            opacity: 1;
+        }
+    }
+}
+.connexionStatus::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent green transparent;
+    z-index: 510;
+}
+@media screen and (max-width: 1100px) {
+    .connexionStatus {
+        right: $px * 2;
+    }
+}
+@media screen and (max-width: 530px) {
+    .connexionStatus {
+        top: $px * 13;
+    }
+}
+.errorMsg {
+    font-family: Roboto;
+    text-align: center;
+    color: $col1;
+    border: 1px solid green;
+    background-color: green;
+    animation: errorMsg 2s;
+    animation-timeline: view();
+    padding: $px;
+    position: fixed;
+    right: $px;
+    bottom: $px;
+    border-radius: $px * 2 $px $px $px;
+    z-index: 400;
+
+    @keyframes errorMsg {
+        from {
+            opacity: 0;
+        }to {
+            opacity: 1;
+        }
+    }
+}
+.infoMsg {
+    font-family: Roboto;
+    text-align: center;
+    color: $col1;
+    border: 1px solid green;
+    background-color: green;
+    animation: infoMsg 4s;
+    animation-timeline: view();
+    padding: $px;
+    position: fixed;
+    right: $px * 2;
+    bottom: $px;
+    border-radius: $px * 2 $px $px $px;
+    z-index: 510;
+    opacity: 1;
+
+    @keyframes infoMsg {
+        from {
+            opacity: 0;
+        }to {
+            opacity: 1;
+        }
+    }
+}
+.fa-info {
+    border: 2px solid $col1;
+    padding: calc($px / 2) $px;
+    margin: $px 0px $px $px;
+    border-radius: $px * 4;
+}
+
+.errorMsg::after, .infoMsg::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 20%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent green transparent;
+    z-index: 400;
+}
+
+@media screen and (min-width: 2200px) {
+    .reservation {
+        height: 70vh;
+    }
+}
+
+.reservation {
+    @include ths.flex(column, center, center);
+    gap: 1rem;
+    font-family: Poppins;
+    
+    .presentation-text {
+        color: $col2;
+        text-align: center;
+        margin-top: 100px;
+        font-weight: bolder;
+        margin-right: 0px;
+        animation: tarif-presentation 1.1s;
+    }
+    @keyframes tarif-presentation {
+        from {
+            margin-right: 50px;
+            opacity: 0;
+        }
+        to {
+            margin-right: 0px;
+            opacity: 1;
+        }
+    }
+    .tarif-collection {
+        @include ths.flex(row, center, center);
+        flex-wrap: wrap;
+        height: auto;
+        gap: 4rem;
+
+        .card {
+            padding: ($px * 2);
+            width: 280px;
+            box-shadow: 1px 1px 10px 1px rgba($color: $col3, $alpha: 0.5);
+            transition: $tr;
+            border-radius: $px * 2;
+            z-index: 1;
+            animation: card 1.5s;
+            margin: 0px;
+
+            .card-heading {
+                text-align: center;
+                padding-top: $px;
+                font-family: x-font;
+
+                .prix {
+                    font-weight: 800;
+                }
+            }
+            .card-body li {
+                list-style: none;
+                line-height: 32px;
+                font-family: Roboto, sans-serif;
+                .no {
+                    color: red;
+                }
+            }
+            .card-control {
+                text-align: center;
+                
+                .btn {
+                    background-color: $col3;
+                    color: $col1;
+                    border: none;
+                    border-radius: 0px;
+                    width: 100%;
+                }
+            }
+        }
+        @keyframes card {
+            from {
+                margin-top: 40px;
+                opacity: 0;
+            }
+            to {
+                margin-top: 0px;
+                opacity: 1;
+            }
+        }
+        .card:hover {
+            transform: scale(0.98);
+        }
+        .basic, .premium {
+            color: $col3;
+        }
+        .classic {
+            border: 1px solid $col3;
+            color: $col3;
+        }
+        .card:hover {
+             background-color: rgba($color: $col2, $alpha: 0.7);
+             color: $col1;
+        }
+        // .premium {
+        //     background-color: rgba($color: $col2, $alpha: 0.7);
+        //     color: $col1;
+        // }
+    }
+    @media screen and (max-width: 655px) {
+        .tarif-collection {
+            gap: 1rem;
+        }
+    }
+    @media screen and (max-width: 285px) {
+        .tarif-collection {
+            @include ths.flex(row, center, center);
+            flex-wrap: wrap;
+            height: auto;
+            gap: 2rem;
+
+            .card {
+                width: 98%;
+                padding: ($px * 2) $px $px $px;
+
+                .card-heading {
+                    text-align: center;
+                    padding-top: $px;
+
+                    .prix {
+                        font-weight: 800;
+                    }
+                }
+                .card-body li {
+                    list-style: none;
+                    line-height: 32px;
+                    font-family: Roboto, sans-serif;
+                    
+                    .no {
+                        color: red;
+                    }
+                }
+                .card-control {
+                    text-align: center;
+                    
+                    .btn {
+                        background-color: $col3;
+                        color: $col1;
+                        border: none;
+                        border-radius: 0px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .container {
+        border: 1px solid #00000034;
+        transition: $tr;
+        padding: $px;
+        margin: $px;
+
+        .chambre-label {
+            font-family: x-font;
+            font-size: 30px;
+            color: $col2;
+        }
+    }
+    h5 {
+        text-align: center;
+        font-family: Roboto;
+        padding: ($px * 2) 0px 0px 0px;
+    }
+    .form {
+        @include ths.flex(row, center, center);
+        gap: 1rem;
+        font-family: Roboto;
+        padding: $px;
+        margin: 0px 0px $px 0px;
+        color: $col3;
+        
+        .form-group {
+            margin: $px;
+            @include ths.flex(row, center, center);
+
+            label {
+                padding: $px;
+            }
+            .form-control {
+                border-radius: 0px;
+            }
+            .btn {
+                background-color: $col3;
+                color: $col1;
+            }
+        }
+    }
+    .container:hover, .container:focus {
+        box-shadow: 1px 1px 5px 0px rgba($color: $col2, $alpha: 0.4);
+    }
+    @media screen and (max-width: 1200px) {
+        .form {
+            @include ths.flex(column, center, center);
+            .form-group {
+                width: 100%;
+            }
+        }
+    }
+    @media screen and (max-width: 460px) {
+        .form {
+            padding: $px * 2;
+
+            .form-group {
+                margin: 0px;
+                @include ths.flex(column, start, start);
+
+                label {
+                    margin: (-$px) (0px) (-$px) (0px);
+                }
+                .form-control {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+.image-container {
+    @include ths.flex();
+    height: 90vh;
+    margin-top: -40px;
+    
+    .chambre {
+        @include ths.flex();
+        width: 95%;
+        overflow-x: scroll;
+        gap: 1rem;
+        position: absolute;
+        
+        .image {
+            width: auto;
+            height: 90vh;
+            animation: image 2s;
+        }
+        @keyframes image {
+            from {
+                opacity: 0;
+            }to {
+                opacity: 1;
+            }
+        }
+    }
+}
+.success-modal-container {
+    @include ths.flex(column, center, center);
+    position: fixed;
+    top: 60px;
+    right: 50px;
+    width: 300px;
+    background-color: $col1;
+    z-index: 100;
+    padding: $px * 2;
+    margin: $px * 2;
+    border: 1px solid rgba($color: $col2, $alpha: 0.6);
+    border-radius: $px * 2;
+    box-shadow: 25px 25px 100px 120px rgba($color: $col2, $alpha: 0.4);
+    animation: reservationSuccess 1.5s;
+    font-family: Roboto;
+
+    .recu-btn {
+        width: 100%;
+        border-radius: 0px;
+        background-color: $col3;
+        color: $col1;
+        transition: $tr;
+        padding: $px;
+        border: none;
+    }
+    .recu-btn:hover, .recu-btn:focus, .recu-btn:last-child {
+        background-color: $col3;
+        color: $col1;
+    }
+    .fa-key {
+        color: gold;
+    }
+    .modal-body {
+        text-align: center;
+        padding: $px;
+    }
+}
+@keyframes reservationSuccess {
+    from {
+        right: -100px;
+        opacity: 0;
+    }
+    to {
+        right: 50px;
+        opacity: 1;
+    }
+}
+@media screen and (max-width: 445px) {
+    .success-modal-container {
+        width: 100%;
+        right: 0px;
+        margin: $px * 2 0px;
+    }
+}
