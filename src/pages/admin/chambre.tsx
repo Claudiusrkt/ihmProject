@@ -170,6 +170,7 @@ function AjouterChambre({showAddChambreModal, setShowAddChambreModal, listeChamb
                         prev => { return { ...prev, type: e.target.value} }
                     )}>
                         <option value="classique">Classique</option>
+                        <option value="basique">Basique</option>
                         <option value="vip">VIP</option>
                     </select>
                 </div>
